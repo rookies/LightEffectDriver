@@ -1,0 +1,36 @@
+#ifndef LightEffectDriver_h
+#define LightEffectDriver_h
+#include <Arduino.h>
+
+enum LightEffect { SWITCH, FADE, FADEOVER };
+enum LightEffectOrder { ORDERED, RANDOM };
+enum LightEffectDirection { UP, DOWN, UPDOWN };
+
+class LightEffectDriver {
+  public:
+    LightEffectDriver(byte[] pins, byte pinNumber);
+    void update();
+    void setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction);
+    void setEffectSpeed(byte speed);
+    void setMinValues(byte[] minValues);
+    void setMaxValues(byte[] maxValues);
+  private:
+    void _calculateChangeInterval();
+    /* Variables: */
+    byte _pinNumber;
+    byte _speed;
+    LightEffect _effect;
+    LightEffectOrder _order;
+    LightEffectDirection _direction;
+    byte[] _pins;
+    byte[] _minValues;
+    byte[] _maxValues;
+    /* State Variables: */
+    unsigned long _lastChange;
+    unsigned long _changeInterval; /* TODO: maybe smaller datatype? */
+    byte _pin1;
+    byte _pin2; /* Only for FADEOVER effect */
+    LightEffectDirection _directionState; /* Only for UPDOWN direction */
+};
+
+#endif
