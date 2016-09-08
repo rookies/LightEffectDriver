@@ -5,7 +5,8 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
   _pins = new byte[pinNumber];
   _minValues = new byte[pinNumber];
   _maxValues = new byte[pinNumber];
-  for (int i; i < pinNumber; ++i) {
+  _pinValues = new byte[pinNumber];
+  for (int i=0; i < pinNumber; ++i) {
     _pins[i] = pins[i];
     _minValues[i] = 0;
     _maxValues[i] = 255;
@@ -13,7 +14,7 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
 }
 
 /* TODO: Init state variables */
-/* TODO: Deconstruct _pins, _minValues, _maxValues, ... */
+/* TODO: Deconstruct _pins, _minValues, _maxValues, _pinValues, ... */
 
 void LightEffectDriver::update() {
   /* Check the last change: */
@@ -23,6 +24,13 @@ void LightEffectDriver::update() {
   /* Check the effect: */
   if (_effect == SWITCH) {
     _indexPin1 = _chooseNextPinIndex(_indexPin1);
+    for (int i=0; i < _pinValues; ++i) {
+      if (i == _indexPin1) {
+        _pinValues[i] = _maxValues[i];
+      } else {
+        _pinValues[i] = _minValues[i];
+      };
+    }
   } else if (_effect == FADE) {
     /* TODO */
   } else if (_effect == FADEOVER) {
@@ -50,13 +58,13 @@ void LightEffectDriver::setEffectSpeed(byte speed) {
 }
 
 void LightEffectDriver::setMinValues(byte* minValues) {
-  for (int i; i < _pinNumber; ++i) {
+  for (int i=0; i < _pinNumber; ++i) {
     _minValues[i] = minValues[i];
   }
 }
 
 void LightEffectDriver::setMaxValues(byte* maxValues) {
-  for (int i; i < _pinNumber; ++i) {
+  for (int i=0; i < _pinNumber; ++i) {
     _maxValues[i] = maxValues[i];
   }
 }
@@ -95,11 +103,7 @@ byte LightEffectDriver::_chooseNextPinIndex(byte currentIndex) {
 }
 
 void LightEffectDriver::_setPins() {
-  if (_effect == SWITCH) {
-    /* TODO */
-  } else if (_effect == FADE) {
-    /* TODO */
-  } else if (_effect == FADEOVER) {
-    /* TODO */
-  };
+  for (int i=0; i < _pinNumber; ++i) {
+    analogWrite(_pins[i], _pinValues[i]); /* TODO: value conversion (lin, exp, inv) */
+  }
 }

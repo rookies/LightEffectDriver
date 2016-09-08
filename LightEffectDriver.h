@@ -28,6 +28,7 @@ class LightEffectDriver {
     byte* _minValues;
     byte* _maxValues;
     /* State Variables: */
+    byte* _pinValues;
     unsigned long _lastChange;
     unsigned long _changeInterval; /* TODO: maybe smaller datatype? */
     byte _indexPin1;
