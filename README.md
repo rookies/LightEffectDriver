@@ -39,7 +39,7 @@ void setup() {
   /* Fade up & down with an exponential function: */
   driver.setEffect(FADE, ORDERED, UPDOWN, EXP);
   /* Set speed to maximum: */
-  driver.setSpeed(255);
+  driver.setEffectSpeed(255);
 }
 
 void loop() {
