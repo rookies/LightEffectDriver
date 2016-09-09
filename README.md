@@ -54,6 +54,7 @@ void loop() {
 This example program fades through 3 lights up & down at maximum speed until it is stopped. For a full example with all possibilities, see `examples/FullDemo/FullDemo.ino`.
 
 ## API Documentation
+### begin(...)
 ```arduino
 bool begin(byte* pins, byte pinNumber);
 ```
@@ -62,45 +63,50 @@ Returns false if begin() was already called or pinNumber is zero.
 * pins: Array of pins to use.
 * pinNumber: Number of pins to use.
 
+### update()
 ```arduino
 void update();
 ```
 Does the work, should be called as often as possible in main loop.
 
+### setEffect(...)
 ```arduino
 bool setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve);
 ```
 Sets the effect and effect params.
 Returns false if an illegal argument combination is given or begin() wasn't called.
 * effect:
-** SWITCH: Switch through the lights.
-** FADE: Fade the light on, then fade it off, then switch to the next.
-** FADEOVER: Fade the next light on while the current one fades off.
+ * **SWITCH**: Switch through the lights.
+ * **FADE**: Fade the light on, then fade it off, then switch to the next.
+ * **FADEOVER**: Fade the next light on while the current one fades off.
 * order:
-** ORDERED: Select the next light by a specific order, see direction parameter.
-** RANDOM: Select the next light randomly, direction parameter is ignored.
+ * **ORDERED**: Select the next light by a specific order, see direction parameter.
+ * **RANDOM**: Select the next light randomly, direction parameter is ignored.
 * direction:
-** UP: Select the next pin, start with 0 after the last pin.
-** DOWN: Select the previous pin, start with the last pin after 0.
-** UPDOWN: Select like UP until the last pin, then like DOWN until 0, and so on.
+ * **UP**: Select the next pin, start with 0 after the last pin.
+ * **DOWN**: Select the previous pin, start with the last pin after 0.
+ * **UPDOWN**: Select like UP until the last pin, then like DOWN until 0, and so on.
 * curve:
-** LIN: No modification: `y = x`
-** INV: Invert the values: `y = 255-x`
-** EXP: Use an exponential function: `y = exp(x)`
-** EXPINV: Use an exponential function with inverted values: `y = exp(255-x)`
+ * **LIN**: No modification: `y = x`
+ * **INV**: Invert the values: `y = 255-x`
+ * **EXP**: Use an exponential function: `y = exp(x)`
+ * **EXPINV**: Use an exponential function with inverted values: `y = exp(255-x)`
 
+### setEffectSpeed(...)
 ```arduino
 void setEffectSpeed(byte speed);
 ```
 Sets the effect speed.
 * speed: The effect speed, 0 is the slowest, 255 the fastest.
 
+### setMinValues(...)
 ```arduino
 void setMinValues(byte* minValues);
 ```
 Sets the minimum value for each pin.
 * minValues: Array with as many entries as pins given to begin().
 
+### setMaxValues(...)
 ```arduino
 void setMaxValues(byte* maxValues);
 ```
