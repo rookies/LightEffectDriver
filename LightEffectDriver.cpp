@@ -112,11 +112,11 @@ void LightEffectDriver::_setPins() {
         break;
       case EXP:
         /* exponential */
-        analogWrite(_pins[i], pgm_read_byte(&etable[_pinValues[i]]));
+        analogWrite(_pins[i], pgm_read_byte(&_expTable[_pinValues[i]]));
         break;
       case EXPINV:
         /* exponential & inverted */
-        analogWrite(_pins[i], pgm_read_byte(&etable[255-_pinValues[i]]));
+        analogWrite(_pins[i], pgm_read_byte(&_expTable[255-_pinValues[i]]));
         break;
       default:
         /* linear */
