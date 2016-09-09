@@ -1,0 +1,21 @@
+# LightEffectDriver
+This is an **Arduino library** for doing cool stuff with **multiple lights** using PWM. Everything is done **non-blocking**,
+to use it you just need to specify the effect and call the *update()*-function in your program loop. In theory, the library
+supports an unlimited amount of lights and any type of light the Arduino can drive directly or indirectly, e.g.
+* small **LEDs** directly
+* bigger LEDs or **LED-lamps** using transistors
+* **light bulbs** using bigger transistors and/or relays
+
+The available **effects** are:
+* **Switching** through the lights
+* **Fading** the lights on and off, one after another
+* Fading through the lights; while one light fades off the next one fades on
+
+This can happen in a random order, in one direction (up or down) or in both directions (up,down,up,...). There are
+modifiing curves which can be applied on the values:
+* fading inverted (from maximum to minimum value)
+* fading with an exponential function (to compensate the logarithmic characteristic curve of the human eye)
+* fading with an inverted exponential function (from max to min)
+
+Maximum and minimum values are 0 resp. 255 by default but can be adjusted. Speed can be adjusted between 10ms and 10s for
+switching to the next light and 1ms and 1s for fading to the next value.
