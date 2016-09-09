@@ -113,5 +113,10 @@ void setMaxValues(byte* maxValues);
 Sets the maximum value for each pin.
 * maxValues: Array with as many entries as pins given to begin().
 
-## Wishlist
+## Wish- & Todo-list
 * FadeOver effect (not implemented atm)
+* More effects!
+* A video demonstrating the effects on real hardware.
+
+## Bugs & Features
+I'm always open for **bug reports** and **feature requests**, feel free to open an issue or create a pull request.
