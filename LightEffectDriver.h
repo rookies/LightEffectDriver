@@ -5,6 +5,7 @@
 
 enum LightEffect { SWITCH, FADE, FADEOVER };
 enum LightEffectOrder { ORDERED, RANDOM };
+/* UP: counting up, DOWN: counting down */
 enum LightEffectDirection { NONE, UP, DOWN, UPDOWN };
 enum LightEffectCurve { LIN, INV, EXP, EXPINV };
 
@@ -20,6 +21,8 @@ class LightEffectDriver {
     void _calculateChangeInterval();
     byte _chooseNextPinIndex(byte currentIndex);
     void _setPins();
+    LightEffectDirection _getEffectDirection();
+    void _changeDirection();
     /* Constants: */
     static const uint8_t _expTable[] PROGMEM;
     /* Variables: */

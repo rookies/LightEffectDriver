@@ -23,17 +23,21 @@ void LightEffectDriver::update() {
   };
   /* Check the effect: */
   if (_effect == SWITCH) {
+    /* Switching */
     _indexPin1 = _chooseNextPinIndex(_indexPin1);
-    for (int i=0; i < _pinValues; ++i) {
+    for (int i=0; i < _pinNumber; ++i) {
       if (i == _indexPin1) {
         _pinValues[i] = _maxValues[i];
       } else {
         _pinValues[i] = _minValues[i];
       };
     }
+    _changeDirection();
   } else if (_effect == FADE) {
+    /* Fading */
     /* TODO */
   } else if (_effect == FADEOVER) {
+    /* Fading over */
     /* TODO */
   };
   /* Set pins: */
@@ -79,13 +83,8 @@ byte LightEffectDriver::_chooseNextPinIndex(byte currentIndex) {
     /* Random order, choose a random pin to be the next: */
     return random(0, _pinNumber);
   } else {
-    /* Ordered, check for UPDOWN direction: */
-    LightEffectDirection dir = _direction;
-    if (_direction == UPDOWN) {
-      dir = _directionState;
-    };
-    /* Check for effect or state direction (if effect direction is UPDOWN): */
-    if (dir == UP) {
+    /* Check for direction: */
+    if (_getEffectDirection() == UP) {
       /* Counting up, check if we are at the last pin: */
       if (currentIndex == _pinNumber-1) {
         return 0;
@@ -123,6 +122,26 @@ void LightEffectDriver::_setPins() {
         analogWrite(_pins[i], _pinValues[i]);
     }
   }
+}
+
+LightEffectDirection LightEffectDriver::_getEffectDirection() {
+  if (_direction == UPDOWN) {
+    return _directionState;
+  } else {
+    return _direction;
+  };
+}
+
+/* not for FADEOVER */
+void LightEffectDriver::_changeDirection() {
+  if (_order == RANDOM || _direction != UPDOWN) {
+    return;
+  };
+  if (_direction == UP && _indexPin1 == _pinNumber-1) {
+    _direction = DOWN;
+  } else if (_direction == DOWN && _indexPin1 == 0) {
+    _direction = UP;
+  };
 }
 
 /*
