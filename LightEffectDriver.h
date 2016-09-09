@@ -3,11 +3,92 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
-enum LightEffect { SWITCH, FADE, FADEOVER };
-enum LightEffectOrder { ORDERED, RANDOM };
-/* UP: counting up, DOWN: counting down */
-enum LightEffectDirection { NONE, UP, DOWN, UPDOWN };
-enum LightEffectCurve { LIN, INV, EXP, EXPINV };
+/**
+ * Available light effects.
+*/
+enum LightEffect {
+  /**
+   * Switch through the lights.
+  */
+  SWITCH,
+  /**
+   * Fades the lights on, then off,
+   * then switches to the next.
+  */
+  FADE,
+  /**
+   * Fades the next light on while
+   * the current one is still fading off.
+  */
+  FADEOVER
+};
+
+/**
+ * Available orders in which
+ * the next light is selected.
+*/
+enum LightEffectOrder {
+  /**
+   * Ordered, needs a effect direction.
+   * (UP, DOWN or UPDOWN)
+  */
+  ORDERED,
+  /**
+   * Randomly, ignores effect direction.
+  */
+  RANDOM
+};
+
+/**
+ * Available directions for ordered selection.
+*/
+enum LightEffectDirection {
+  /**
+   * No direction, only allowed for
+   * random selection.
+  */
+  NONE,
+  /**
+   * Counting pin index up.
+  */
+  UP,
+  /**
+   * Counting pin index down.
+  */
+  DOWN,
+  /**
+   * Counting alternating up and down.
+  */
+  UPDOWN
+};
+
+/**
+ * Available pin value modifier curves.
+*/
+enum LightEffectCurve {
+  /**
+   * No modification, fading from dark to
+   * bright with a linear function.
+  */
+  LIN,
+  /**
+   * Fading from bright to dark with a
+   * linear function.
+  */
+  INV,
+  /**
+   * Fading from dark to bright with an
+   * exponential function, this is mostly
+   * the best choice because it looks linear
+   * to the human eye.
+  */
+  EXP,
+  /**
+   * Fading from bright to dark with an
+   * exponential function.
+  */
+  EXPINV
+};
 
 class LightEffectDriver {
   public:
