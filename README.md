@@ -17,7 +17,7 @@ modifiing curves which can be applied on the values:
 * fading with an exponential function (to compensate the logarithmic characteristic curve of the human eye)
 * fading with an inverted exponential function (from max to min)
 
-Maximum and minimum values are 0 resp. 255 by default but can be adjusted. Speed can be adjusted between 10ms and 10s for
+Minimum and maximum values are 0 resp. 255 by default but can be adjusted. Speed can be adjusted between 10ms and 10s for
 switching to the next light and 1ms and 1s for fading to the next value.
 
 ## Example
@@ -46,3 +46,9 @@ void loop() {
 }
 ```
 This example program fades through 3 lights up & down at maximum speed until it is stopped. For a full example with all possibilities, see `examples/FullDemo/FullDemo.ino`.
+
+## API Documentation
+TODO
+
+## Wishlist
+TODO
