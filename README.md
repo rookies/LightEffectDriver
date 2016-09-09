@@ -54,7 +54,58 @@ void loop() {
 This example program fades through 3 lights up & down at maximum speed until it is stopped. For a full example with all possibilities, see `examples/FullDemo/FullDemo.ino`.
 
 ## API Documentation
-TODO
+```arduino
+bool begin(byte* pins, byte pinNumber);
+```
+Initializes the driver, needs to be called once before any other method.
+Returns false if begin() was already called or pinNumber is zero.
+* pins: Array of pins to use.
+* pinNumber: Number of pins to use.
+
+```arduino
+void update();
+```
+Does the work, should be called as often as possible in main loop.
+
+```arduino
+bool setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve);
+```
+Sets the effect and effect params.
+Returns false if an illegal argument combination is given or begin() wasn't called.
+* effect:
+** SWITCH: Switch through the lights.
+** FADE: Fade the light on, then fade it off, then switch to the next.
+** FADEOVER: Fade the next light on while the current one fades off.
+* order:
+** ORDERED: Select the next light by a specific order, see direction parameter.
+** RANDOM: Select the next light randomly, direction parameter is ignored.
+* direction:
+** UP: Select the next pin, start with 0 after the last pin.
+** DOWN: Select the previous pin, start with the last pin after 0.
+** UPDOWN: Select like UP until the last pin, then like DOWN until 0, and so on.
+* curve:
+** LIN: No modification: `y = x`
+** INV: Invert the values: `y = 255-x`
+** EXP: Use an exponential function: `y = exp(x)`
+** EXPINV: Use an exponential function with inverted values: `y = exp(255-x)`
+
+```arduino
+void setEffectSpeed(byte speed);
+```
+Sets the effect speed.
+* speed: The effect speed, 0 is the slowest, 255 the fastest.
+
+```arduino
+void setMinValues(byte* minValues);
+```
+Sets the minimum value for each pin.
+* minValues: Array with as many entries as pins given to begin().
+
+```arduino
+void setMaxValues(byte* maxValues);
+```
+Sets the maximum value for each pin.
+* maxValues: Array with as many entries as pins given to begin().
 
 ## Wishlist
-TODO
+* FadeOver effect (not implemented atm)

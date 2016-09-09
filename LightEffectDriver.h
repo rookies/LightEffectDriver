@@ -44,11 +44,6 @@ enum LightEffectOrder {
 */
 enum LightEffectDirection {
   /**
-   * No direction, only allowed for
-   * random selection.
-  */
-  NONE,
-  /**
    * Counting pin index up.
   */
   UP,
@@ -121,8 +116,9 @@ class LightEffectDriver {
      * @param order The order of the effect.
      * @param direction The direction of the effect.
      * @param curve The value-conversion-curve for the effect.
+     * @return Returns false if an illegal argument combination is given or begin() wasn't called.
     */
-    void setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve);
+    bool setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve);
     /**
      * Sets the effect speed.
      * 

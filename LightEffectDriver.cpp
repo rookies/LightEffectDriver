@@ -9,7 +9,8 @@ LightEffectDriver::LightEffectDriver() {
   _direction = UP;
   _curve = EXP;
   _lastChange = 0;
-  _indexPin1 = 0; /* TODO: Maybe init indexPin2? */
+  _indexPin1 = 0;
+  /* TODO: Maybe init indexPin2? */
   _directionState = UP;
   _fadingDirection = UP;
   /* Calculate changeInterval: */
@@ -84,8 +85,8 @@ void LightEffectDriver::update() {
       _indexPin1 = _chooseNextPinIndex(_indexPin1);
     } else {
       /* No end reached, fade: */
-      /* TODO: Use stepSize! But beware of overflows! */
-      //byte stepSize = _lastChange/_changeInterval; /* TODO: Type conversion? */
+      /* TODO: Use stepSize! But beware of overflows and type conversion! */
+      //byte stepSize = _lastChange/_changeInterval;
       if (_fadingDirection == UP) {
         _pinValues[_indexPin1]++;
       } else {
@@ -94,7 +95,7 @@ void LightEffectDriver::update() {
     };
   } else if (_effect == FADEOVER) {
     /* Fading over */
-    /* TODO */
+    /* TODO: FadeOver effect */
   };
   /* Set pins: */
   _setPins();
@@ -102,18 +103,37 @@ void LightEffectDriver::update() {
   _lastChange = millis();
 }
 
-void LightEffectDriver::setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve) {
+bool LightEffectDriver::setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve) {
   if (_pinNumber == 0) {
     /* begin() wasn't called */
-    return;
+    return false;
   };
-  /* TODO: Check arguments */
+  /* Check arguments: */
+  if (effect != SWITCH && effect != FADE && effect != FADEOVER) {
+    /* Invalid effect value */
+    return false;
+  };
+  if (order != ORDERED && order != RANDOM) {
+    /* Invalid effect order */
+    return false;
+  };
+  if (direction != UP && direction != DOWN && direction != UPDOWN) {
+    /* Invalid effect direction */
+    return false;
+  };
+  if (curve != LIN && curve != INV && curve != EXP && curve != EXPINV) {
+    /* Invalid effect curve */
+    return false;
+  };
+  /* Set variables: */
   _effect = effect;
   _order = order;
   _direction = direction;
   _curve = curve;
   /* Update: */
   _calculateChangeInterval();
+  /* Return success: */
+  return true;
 }
 
 void LightEffectDriver::setEffectSpeed(byte speed) {
