@@ -8,11 +8,11 @@
 */
 enum LightEffect {
   /**
-   * Switch through the lights.
+   * Switches through the lights.
   */
   SWITCH,
   /**
-   * Fades the lights on, then off,
+   * Fades the light on, then off,
    * then switches to the next.
   */
   FADE,
@@ -29,7 +29,7 @@ enum LightEffect {
 */
 enum LightEffectOrder {
   /**
-   * Ordered, needs a effect direction.
+   * Ordered, needs an effect direction.
    * (UP, DOWN or UPDOWN)
   */
   ORDERED,
