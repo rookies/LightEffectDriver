@@ -1,7 +1,20 @@
 #include <LightEffectDriver.h>
 
 LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
+  /* TODO: Check pinNumber */
+  /* Set scalar variables: */
   _pinNumber = pinNumber;
+  _speed = 100;
+  _effect = SWITCH;
+  _order = ORDERED;
+  _direction = UP;
+  _curve = EXP;
+  _lastChange = 0;
+  _indexPin1 = 0; /* TODO: Maybe init indexPin2? */
+  _directionState = UP;
+  /* Calculate changeInterval: */
+  _calculateChangeInterval();
+  /* Set array variables: */
   _pins = new byte[pinNumber];
   _minValues = new byte[pinNumber];
   _maxValues = new byte[pinNumber];
@@ -10,6 +23,7 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
     _pins[i] = pins[i];
     _minValues[i] = 0;
     _maxValues[i] = 255;
+    _pinValues[i] = 0;
   }
 }
 
