@@ -19,3 +19,30 @@ modifiing curves which can be applied on the values:
 
 Maximum and minimum values are 0 resp. 255 by default but can be adjusted. Speed can be adjusted between 10ms and 10s for
 switching to the next light and 1ms and 1s for fading to the next value.
+
+## Example
+```arduino
+/* Include the library: */
+#include <LightEffectDriver.h>
+
+/* Specify the number of pins to use: */
+const int pinNumber = 3;
+/* Specify the pin numbers (They need to suppport PWM!): */
+byte pins[pinNumber] = {9,10,11};
+
+/* Create the driver instance: */
+LightEffectDriver driver(pins, pinNumber);
+
+void setup() {
+  /* Fade up & down with an exponential function: */
+  driver.setEffect(FADE, ORDERED, UPDOWN, EXP);
+  /* Set speed to maximum: */
+  driver.setSpeed(255);
+}
+
+void loop() {
+  /* Let the library do it's work: */
+  driver.update();
+}
+```
+This example program fades through 3 lights up & down at maximum speed until it is stopped. For a full example with all possibilities, see `examples/FullDemo/FullDemo.ino`.
