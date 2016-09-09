@@ -111,6 +111,7 @@ void LightEffectDriver::setMaxValues(byte* maxValues) {
 
 void LightEffectDriver::_calculateChangeInterval() {
   /* 1ms ... 1021ms */
+  /* TODO: 1ms won't work, Arduino's PWM cycle duration is 2ms. */
   _changeInterval = -4*_speed + 1021;
   if (_effect == SWITCH) {
     /* 10ms ... ~10s */
@@ -143,24 +144,31 @@ byte LightEffectDriver::_chooseNextPinIndex(byte currentIndex) {
 }
 
 void LightEffectDriver::_setPins() {
-  for (int i=0; i < _pinNumber; ++i) {
-    switch (_curve) {
-      case INV:
-        /* inverted */
+  int i;
+  switch (_curve) {
+    case INV:
+      /* inverted */
+      for (i=0; i < _pinNumber; ++i) {
         analogWrite(_pins[i], 255-_pinValues[i]);
-        break;
-      case EXP:
-        /* exponential */
+      }
+      break;
+    case EXP:
+      /* exponential */
+      for (i=0; i < _pinNumber; ++i) {
         analogWrite(_pins[i], pgm_read_byte(&_expTable[_pinValues[i]]));
-        break;
-      case EXPINV:
-        /* exponential & inverted */
+      }
+      break;
+    case EXPINV:
+      /* exponential & inverted */
+      for (i=0; i < _pinNumber; ++i) {
         analogWrite(_pins[i], pgm_read_byte(&_expTable[255-_pinValues[i]]));
-        break;
-      default:
-        /* linear */
+      }
+      break;
+    default:
+      /* linear */
+      for (i=0; i < _pinNumber; ++i) {
         analogWrite(_pins[i], _pinValues[i]);
-    }
+      }
   }
 }
 
