@@ -94,11 +94,17 @@ class LightEffectDriver {
   public:
     /**
      * Default constructor.
+    */
+    LightEffectDriver();
+    /**
+     * Initializes the driver, needs to be
+     * called once before any other method.
      * 
      * @param pins Array of pins.
      * @param pinNumber Number of entries in pins-array.
+     * @return Returns false if begin() was already called or pinNumber is zero.
     */
-    LightEffectDriver(byte* pins, byte pinNumber);
+    bool begin(byte* pins, byte pinNumber);
     /**
      * Default deconstructor.
     */

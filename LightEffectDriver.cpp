@@ -1,9 +1,8 @@
 #include <LightEffectDriver.h>
 
-LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
-  /* TODO: Check pinNumber */
+LightEffectDriver::LightEffectDriver() {
   /* Set scalar variables: */
-  _pinNumber = pinNumber;
+  _pinNumber = 0;
   _speed = 100;
   _effect = SWITCH;
   _order = ORDERED;
@@ -15,6 +14,19 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
   _fadingDirection = UP;
   /* Calculate changeInterval: */
   _calculateChangeInterval();
+}
+
+bool LightEffectDriver::begin(byte* pins, byte pinNumber) {
+  if (_pinNumber != 0) {
+    /* begin() already called */
+    return false;
+  };
+  if (pinNumber == 0) {
+    /* invalid argument */
+    return false;
+  };
+  /* Set scalar variables: */
+  _pinNumber = pinNumber;
   /* Set array variables: */
   _pins = new byte[pinNumber];
   _minValues = new byte[pinNumber];
@@ -26,16 +38,25 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
     _maxValues[i] = 255;
     _pinValues[i] = 0;
   }
+  /* Return success: */
+  return true;
 }
 
 LightEffectDriver::~LightEffectDriver() {
-  delete[] _pins;
-  delete[] _minValues;
-  delete[] _maxValues;
-  delete[] _pinValues;
+  if (_pinNumber != 0) {
+    /* begin() was called */
+    delete[] _pins;
+    delete[] _minValues;
+    delete[] _maxValues;
+    delete[] _pinValues;
+  };
 }
 
 void LightEffectDriver::update() {
+  if (_pinNumber == 0) {
+    /* begin() wasn't called */
+    return;
+  };
   /* Check the last change: */
   if (millis() - _lastChange < _changeInterval) {
     return;
@@ -82,6 +103,10 @@ void LightEffectDriver::update() {
 }
 
 void LightEffectDriver::setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve) {
+  if (_pinNumber == 0) {
+    /* begin() wasn't called */
+    return;
+  };
   /* TODO: Check arguments */
   _effect = effect;
   _order = order;
@@ -92,18 +117,30 @@ void LightEffectDriver::setEffect(LightEffect effect, LightEffectOrder order, Li
 }
 
 void LightEffectDriver::setEffectSpeed(byte speed) {
+  if (_pinNumber == 0) {
+    /* begin() wasn't called */
+    return;
+  };
   _speed = speed;
   /* Update: */
   _calculateChangeInterval();
 }
 
 void LightEffectDriver::setMinValues(byte* minValues) {
+  if (_pinNumber == 0) {
+    /* begin() wasn't called */
+    return;
+  };
   for (int i=0; i < _pinNumber; ++i) {
     _minValues[i] = minValues[i];
   }
 }
 
 void LightEffectDriver::setMaxValues(byte* maxValues) {
+  if (_pinNumber == 0) {
+    /* begin() wasn't called */
+    return;
+  };
   for (int i=0; i < _pinNumber; ++i) {
     _maxValues[i] = maxValues[i];
   }

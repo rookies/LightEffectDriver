@@ -33,9 +33,13 @@ const int pinNumber = 3;
 byte pins[pinNumber] = {9,10,11};
 
 /* Create the driver instance: */
-LightEffectDriver driver(pins, pinNumber);
+LightEffectDriver driver;
 
 void setup() {
+  /* Initialize driver: */
+  if (!driver.begin(pins, pinNumber)) {
+    /* Initialization failed, should be handled here. */
+  };
   /* Fade up & down with an exponential function: */
   driver.setEffect(FADE, ORDERED, UPDOWN, EXP);
   /* Set speed to maximum: */

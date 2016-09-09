@@ -2,13 +2,17 @@
 
 const int pinNumber = 3;
 byte pins[pinNumber] = {9,10,11};
-LightEffectDriver driver(pins, pinNumber);
+LightEffectDriver driver;
 byte effect = 0;
 unsigned long lastChange = 0;
 
 void setup() {
   Serial.begin(19200);
   Serial.println("Switch ordered up");
+  if (!driver.begin(pins, pinNumber)) {
+    Serial.println("Error on LightEffectDriver::begin().");
+    while (true) { }
+  };
   driver.setEffect(SWITCH, ORDERED, UP, LIN);
 }
 
