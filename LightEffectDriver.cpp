@@ -27,8 +27,12 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
   }
 }
 
-/* TODO: Init state variables */
-/* TODO: Deconstruct _pins, _minValues, _maxValues, _pinValues, ... */
+LightEffectDriver::~LightEffectDriver() {
+  delete[] _pins;
+  delete[] _minValues;
+  delete[] _maxValues;
+  delete[] _pinValues;
+}
 
 void LightEffectDriver::update() {
   /* Check the last change: */
@@ -89,7 +93,12 @@ void LightEffectDriver::setMaxValues(byte* maxValues) {
 }
 
 void LightEffectDriver::_calculateChangeInterval() {
-  // TODO: _changeInterval = someAlgorithm(_speed, _effect);
+  /* 1ms ... 1021ms */
+  _changeInterval = -4*_speed + 1021;
+  if (_effect == SWITCH) {
+    /* 10ms ... ~10s */
+    _changeInterval *= 10;
+  };
 }
 
 byte LightEffectDriver::_chooseNextPinIndex(byte currentIndex) {

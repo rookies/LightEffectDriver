@@ -12,6 +12,7 @@ enum LightEffectCurve { LIN, INV, EXP, EXPINV };
 class LightEffectDriver {
   public:
     LightEffectDriver(byte* pins, byte pinNumber);
+    ~LightEffectDriver();
     void update();
     void setEffect(LightEffect effect, LightEffectOrder order, LightEffectDirection direction, LightEffectCurve curve);
     void setEffectSpeed(byte speed);
