@@ -1,4 +1,7 @@
 # LightEffectDriver
+**Warning:** This library is at a very early stage of development and currently untested, don't expect it to work.
+
+
 This is an **Arduino library** for doing cool stuff with **multiple lights** using PWM. Everything is done **non-blocking**,
 to use it you just need to specify the effect and call the *update()*-function in your program loop. In theory, the library
 supports an unlimited amount of lights and any type of light the Arduino can drive directly or indirectly, e.g.

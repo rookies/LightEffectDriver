@@ -50,6 +50,7 @@ void LightEffectDriver::update() {
         _pinValues[i] = _minValues[i];
       };
     }
+    /* TODO: Change direction before choosing next pin? */
     _changeDirection();
   } else if (_effect == FADE) {
     /* Fading */
