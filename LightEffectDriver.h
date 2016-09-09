@@ -85,6 +85,24 @@ enum LightEffectCurve {
   EXPINV
 };
 
+/**
+ * Available directions for fading.
+*/
+enum LightEffectFadingDirection {
+  /**
+   * Increasing value.
+  */
+  UPFADING,
+  /**
+   * Decreasing value.
+  */
+  DOWNFADING,
+  /**
+   * Fading disabled.
+  */
+  NOFADING
+};
+
 class LightEffectDriver {
   public:
     /**
@@ -233,9 +251,14 @@ class LightEffectDriver {
     */
     LightEffectDirection _directionState;
     /**
-     * The fading direction.
+     * The fading direction of the active pin.
     */
-    LightEffectDirection _fadingDirection;
+    LightEffectFadingDirection _fadingDirection1;
+    /**
+     * The fading direction of the second active pin.
+     * (only for FADEOVER-effect)
+    */
+    LightEffectFadingDirection _fadingDirection2;
 };
 
 #endif

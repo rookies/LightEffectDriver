@@ -34,7 +34,7 @@ void loop() {
         break;
       case 3:
         Serial.println(".. random");
-        driver.setEffect(SWITCH, RANDOM, NONE, LIN);
+        driver.setEffect(SWITCH, RANDOM, UP, LIN);
         break;
       case 4:
         Serial.println(".. ordered up inverted");
@@ -50,7 +50,7 @@ void loop() {
         break;
       case 7:
         Serial.println(".. random inverted");
-        driver.setEffect(SWITCH, RANDOM, NONE, INV);
+        driver.setEffect(SWITCH, RANDOM, UP, INV);
         break;
       case 8:
         Serial.println("Fade ordered up linear");
@@ -78,11 +78,11 @@ void loop() {
         break;
       case 14:
         Serial.println(".. random linear");
-        driver.setEffect(FADE, RANDOM, NONE, LIN);
+        driver.setEffect(FADE, RANDOM, UP, LIN);
         break;
       case 15:
         Serial.println(".. exponential");
-        driver.setEffect(FADE, RANDOM, NONE, EXP);
+        driver.setEffect(FADE, RANDOM, UP, EXP);
         break;
       case 16:
         Serial.println("FadeOver ordered up linear");
@@ -110,11 +110,11 @@ void loop() {
         break;
       case 22:
         Serial.println(".. random linear");
-        driver.setEffect(FADEOVER, RANDOM, NONE, LIN);
+        driver.setEffect(FADEOVER, RANDOM, UP, LIN);
         break;
       case 23:
         Serial.println(".. exponential");
-        driver.setEffect(FADEOVER, RANDOM, NONE, EXP);
+        driver.setEffect(FADEOVER, RANDOM, UP, EXP);
         break;
     }
     if (effect == 23) {

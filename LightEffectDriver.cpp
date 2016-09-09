@@ -12,7 +12,8 @@ LightEffectDriver::LightEffectDriver() {
   _indexPin1 = 0;
   /* TODO: Maybe init indexPin2? */
   _directionState = UP;
-  _fadingDirection = UP;
+  _fadingDirection1 = UPFADING;
+  _fadingDirection2 = NOFADING;
   /* Calculate changeInterval: */
   _calculateChangeInterval();
 }
@@ -76,10 +77,10 @@ void LightEffectDriver::update() {
     }
   } else if (_effect == FADE) {
     /* Fading */
-    if (_fadingDirection == UP && _pinValues[_indexPin1] == _maxValues[_indexPin1]) {
+    if (_fadingDirection1 == UPFADING && _pinValues[_indexPin1] == _maxValues[_indexPin1]) {
       /* Maximum reached, fade down: */
-      _fadingDirection = DOWN;
-    } else if (_fadingDirection == DOWN && _pinValues[_indexPin1] == _minValues[_indexPin1]) {
+      _fadingDirection1 = DOWNFADING;
+    } else if (_fadingDirection1 == DOWNFADING && _pinValues[_indexPin1] == _minValues[_indexPin1]) {
       /* Minimum reached, change direction or go to next pin: */
       _changeDirection();
       _indexPin1 = _chooseNextPinIndex(_indexPin1);
@@ -87,7 +88,7 @@ void LightEffectDriver::update() {
       /* No end reached, fade: */
       /* TODO: Use stepSize! But beware of overflows and type conversion! */
       //byte stepSize = _lastChange/_changeInterval;
-      if (_fadingDirection == UP) {
+      if (_fadingDirection1 == UPFADING) {
         _pinValues[_indexPin1]++;
       } else {
         _pinValues[_indexPin2]--;
@@ -130,6 +131,7 @@ bool LightEffectDriver::setEffect(LightEffect effect, LightEffectOrder order, Li
   _order = order;
   _direction = direction;
   _curve = curve;
+  /* TODO: Maybe reset _indexPin2, _fadingDirection2 & _pinValues for FADEOVER */
   /* Update: */
   _calculateChangeInterval();
   /* Return success: */
