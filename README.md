@@ -6,7 +6,7 @@ This is an **Arduino library** for doing cool stuff with **multiple lights** usi
 to use it you just need to specify the effect and call the *update()*-function in your program loop. In theory, the library
 supports an unlimited amount of lights and any type of light the Arduino can drive directly or indirectly, e.g.
 * small **LEDs** directly
-* bigger LEDs, **LED-lamps** or other Low-Voltage **light bulbs** using transistors
+* bigger LEDs, **LED-lamps**, **LED-strips** or other Low-Voltage **light bulbs** using transistors
 
 The available **effects** are:
 * **Switching** through the lights

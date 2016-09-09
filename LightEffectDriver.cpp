@@ -12,6 +12,7 @@ LightEffectDriver::LightEffectDriver(byte* pins, byte pinNumber) {
   _lastChange = 0;
   _indexPin1 = 0; /* TODO: Maybe init indexPin2? */
   _directionState = UP;
+  _fadingDirection = UP;
   /* Calculate changeInterval: */
   _calculateChangeInterval();
   /* Set array variables: */
@@ -42,6 +43,7 @@ void LightEffectDriver::update() {
   /* Check the effect: */
   if (_effect == SWITCH) {
     /* Switching */
+    _changeDirection();
     _indexPin1 = _chooseNextPinIndex(_indexPin1);
     for (int i=0; i < _pinNumber; ++i) {
       if (i == _indexPin1) {
@@ -50,11 +52,25 @@ void LightEffectDriver::update() {
         _pinValues[i] = _minValues[i];
       };
     }
-    /* TODO: Change direction before choosing next pin? */
-    _changeDirection();
   } else if (_effect == FADE) {
     /* Fading */
-    /* TODO */
+    if (_fadingDirection == UP && _pinValues[_indexPin1] == _maxValues[_indexPin1]) {
+      /* Maximum reached, fade down: */
+      _fadingDirection = DOWN;
+    } else if (_fadingDirection == DOWN && _pinValues[_indexPin1] == _minValues[_indexPin1]) {
+      /* Minimum reached, change direction or go to next pin: */
+      _changeDirection();
+      _indexPin1 = _chooseNextPinIndex(_indexPin1);
+    } else {
+      /* No end reached, fade: */
+      /* TODO: Use stepSize! But beware of overflows! */
+      //byte stepSize = _lastChange/_changeInterval; /* TODO: Type conversion? */
+      if (_fadingDirection == UP) {
+        _pinValues[_indexPin1]++;
+      } else {
+        _pinValues[_indexPin2]--;
+      };
+    };
   } else if (_effect == FADEOVER) {
     /* Fading over */
     /* TODO */

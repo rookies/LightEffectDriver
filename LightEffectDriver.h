@@ -230,6 +230,10 @@ class LightEffectDriver {
      * The real effect direction for UPDOWN direction.
     */
     LightEffectDirection _directionState;
+    /**
+     * The fading direction.
+    */
+    LightEffectDirection _fadingDirection;
 };
 
 #endif
