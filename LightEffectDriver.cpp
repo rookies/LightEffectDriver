@@ -1,4 +1,5 @@
 #include <LightEffectDriver.h>
+#define LIGHTEFFECTDRIVER_DEBUG
 
 LightEffectDriver::LightEffectDriver() {
   /* Set scalar variables: */
@@ -65,6 +66,9 @@ void LightEffectDriver::update() {
   };
   /* Check the effect: */
   if (_effect == SWITCH) {
+#ifdef LIGHTEFFECTDRIVER_DEBUG
+    Serial.println(F("[LightEffectDriver] Switching to the next light."));
+#endif
     /* Switching */
     _changeDirection();
     _indexPin1 = _chooseNextPinIndex(_indexPin1);
@@ -80,10 +84,17 @@ void LightEffectDriver::update() {
     if (_fadingDirection1 == UPFADING && _pinValues[_indexPin1] == _maxValues[_indexPin1]) {
       /* Maximum reached, fade down: */
       _fadingDirection1 = DOWNFADING;
+#ifdef LIGHTEFFECTDRIVER_DEBUG
+      Serial.println(F("[LightEffectDriver] Set fadingDirection to DOWNFADING."));
+#endif
     } else if (_fadingDirection1 == DOWNFADING && _pinValues[_indexPin1] == _minValues[_indexPin1]) {
       /* Minimum reached, change direction or go to next pin: */
       _changeDirection();
       _indexPin1 = _chooseNextPinIndex(_indexPin1);
+      _fadingDirection1 = UPFADING;
+#ifdef LIGHTEFFECTDRIVER_DEBUG
+    Serial.println(F("[LightEffectDriver] Switching to the next light, set fadingDirection to UPFADING."));
+#endif
     } else {
       /* No end reached, fade: */
       /* TODO: Use stepSize! But beware of overflows and type conversion! */
@@ -91,7 +102,7 @@ void LightEffectDriver::update() {
       if (_fadingDirection1 == UPFADING) {
         _pinValues[_indexPin1]++;
       } else {
-        _pinValues[_indexPin2]--;
+        _pinValues[_indexPin1]--;
       };
     };
   } else if (_effect == FADEOVER) {
@@ -131,9 +142,11 @@ bool LightEffectDriver::setEffect(LightEffect effect, LightEffectOrder order, Li
   _order = order;
   _direction = direction;
   _curve = curve;
+  _pinValues[_indexPin1] = 255; /* FIXME? */
   /* TODO: Maybe reset _indexPin2, _fadingDirection2 & _pinValues for FADEOVER */
   /* Update: */
   _calculateChangeInterval();
+  _setPins();
   /* Return success: */
   return true;
 }
@@ -176,12 +189,21 @@ void LightEffectDriver::_calculateChangeInterval() {
     /* 10ms ... ~10s */
     _changeInterval *= 10;
   };
+#ifdef LIGHTEFFECTDRIVER_DEBUG
+  Serial.print(F("[LightEffectDriver] Calculated new changeInterval: "));
+  Serial.print(_changeInterval);
+  Serial.print(F("ms\n"));
+#endif
 }
 
 byte LightEffectDriver::_chooseNextPinIndex(byte currentIndex) {
   if (_order == RANDOM) {
     /* Random order, choose a random pin to be the next: */
-    return random(0, _pinNumber);
+    byte newIndex;
+    do {
+      newIndex = random(0, _pinNumber);
+    } while (newIndex == currentIndex);
+    return newIndex;
   } else {
     /* Check for direction: */
     if (_getEffectDirection() == UP) {
@@ -194,7 +216,7 @@ byte LightEffectDriver::_chooseNextPinIndex(byte currentIndex) {
     } else {
       /* Counting down, check if we are at the first pin: */
       if (currentIndex == 0) {
-        return _pinNumber;
+        return _pinNumber-1;
       } else {
         return currentIndex-1;
       };
@@ -244,10 +266,16 @@ void LightEffectDriver::_changeDirection() {
   if (_order == RANDOM || _direction != UPDOWN) {
     return;
   };
-  if (_direction == UP && _indexPin1 == _pinNumber-1) {
-    _direction = DOWN;
-  } else if (_direction == DOWN && _indexPin1 == 0) {
-    _direction = UP;
+  if (_directionState == UP && _indexPin1 == _pinNumber-1) {
+    _directionState = DOWN;
+#ifdef LIGHTEFFECTDRIVER_DEBUG
+    Serial.println(F("[LightEffectDriver] Changed direction to DOWN."));
+#endif
+  } else if (_directionState == DOWN && _indexPin1 == 0) {
+    _directionState = UP;
+#ifdef LIGHTEFFECTDRIVER_DEBUG
+    Serial.println(F("[LightEffectDriver] Changed direction to UP."));
+#endif
   };
 }
 
