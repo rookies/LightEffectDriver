@@ -5,8 +5,19 @@
 #include "Core.hh"
 
 namespace LightEffectDriver {
-    void Core::update() {
+    Core::Core(unsigned int number, std::function<void(unsigned int, unsigned int)> callback) :
+        number{number}, callback{std::move(callback)} {}
 
+    void Core::update() {
+        /* TODO */
+    }
+
+    void Core::setLightNumber(unsigned int number) {
+        this->number = number;
+    }
+
+    void Core::setCallback(std::function<void(unsigned int, unsigned int)> callback) {
+        this->callback = std::move(callback);
     }
 
     void Core::setEffect(Effect effect) {
