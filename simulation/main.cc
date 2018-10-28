@@ -199,7 +199,7 @@ int example3() {
         Light(0, 2, sf::Color(0,255,0,0))
     });
     /* Set up driver: */
-    LightEffectDriver::Core driver(3, [&simulation](unsigned int idx, unsigned int val) {
+    LightEffectDriver::Core driver(3, [&simulation](unsigned int idx, uint8_t val) {
         simulation.setBrightness(idx, val);
     });
     /* Show the simulation window: */
@@ -211,7 +211,7 @@ int example3() {
     sf::Clock clock;
     while (simulation.run()) {
         if (clock.getElapsedTime().asMilliseconds() > 2) {
-            driver.update();
+            driver.run();
             clock.restart();
         }
     }

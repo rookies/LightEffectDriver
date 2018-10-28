@@ -5,34 +5,29 @@
 #include "Core.hh"
 
 namespace LightEffectDriver {
-    Core::Core(unsigned int number, std::function<void(unsigned int, unsigned int)> callback) :
+    Core::Core(unsigned int number, std::function<void(unsigned int, uint8_t)> callback) :
         number{number}, callback{std::move(callback)} {}
+
+    void Core::run() {
+        if (number == 0) return;
+        /* TODO: Check change interval. */
+        switch (effect) {
+            case SWITCH:
+                /* TODO */
+                break;
+            case FADE:
+                /* TODO */
+                break;
+            case FADEOVER:
+                /* TODO */
+                break;
+            default:
+                break;
+        }
+        /* TODO: Update last change. */
+    }
 
     void Core::update() {
         /* TODO */
-    }
-
-    void Core::setLightNumber(unsigned int number) {
-        this->number = number;
-    }
-
-    void Core::setCallback(std::function<void(unsigned int, unsigned int)> callback) {
-        this->callback = std::move(callback);
-    }
-
-    void Core::setEffect(Effect effect) {
-        this->effect = effect;
-    }
-
-    void Core::setEffectOrder(Order order) {
-        this->order = order;
-    }
-
-    void Core::setEffectDirection(Direction direction) {
-        this->direction = direction;
-    }
-
-    void Core::setEffectCurve(Curve curve) {
-        this->curve = curve;
     }
 }

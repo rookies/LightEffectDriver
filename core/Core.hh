@@ -13,24 +13,65 @@
 #include "Curve.hh"
 
 namespace LightEffectDriver {
+    /**
+     * This class provides the core functionality.
+     */
     class Core {
     public:
         Core() = delete;
-        explicit Core(unsigned int number, std::function<void(unsigned int, unsigned int)> callback);
+
+        /**
+         * @param number The number of lights to control.
+         * @param callback The function that should be called to update the brightness of a light. First param is
+         * the index of the light, second param the brightness value.
+         */
+        Core(unsigned int number, std::function<void(unsigned int, uint8_t)> callback);
+
+        /**
+         * Does the animation, should be called as often as possible in the main loop of the program.
+         */
+        void run();
+
+        /**
+         * Calculates the animation parameters, has to be called after a change of number, effect, direction or speed.
+         */
         void update();
-        void setLightNumber(unsigned int number);
-        void setCallback(std::function<void(unsigned int, unsigned int)> callback);
-        void setEffect(Effect effect);
-        void setEffectOrder(Order order);
-        void setEffectDirection(Direction direction);
-        void setEffectCurve(Curve curve);
-    private:
+
+        /**
+         * The number of lights to control.
+         */
         unsigned int number;
-        std::function<void(unsigned int, unsigned int)> callback;
+
+        /**
+         * The function that should be called to update the brightness of a light. First param is the index of the
+         * light, second param the brightness value.
+         */
+        std::function<void(unsigned int, uint8_t)> callback;
+
+        /**
+         * The effect type.
+         */
         Effect effect = SWITCH;
+
+        /**
+         * The effect order.
+         */
         Order order = ORDERED;
+
+        /**
+         * The effect direction.
+         */
         Direction direction = UP;
+
+        /**
+         * The brightness curve.
+         */
         Curve curve = Curve::Lin;
+
+        /**
+         * The effect speed.
+         */
+        unsigned int speed = 100;
     };
 }
 

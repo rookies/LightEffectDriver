@@ -14,6 +14,12 @@ namespace LightEffectDriver {
     */
     class Curve {
     public:
+        /**
+         * Maps a value according to the selected curve.
+         *
+         * @param v The input value.
+         * @return The mapped value.
+         */
         inline uint8_t map(uint8_t v) const {
             switch (type) {
                 case LIN:
@@ -28,12 +34,20 @@ namespace LightEffectDriver {
                     return 0;
             }
         }
+
+        /** No modification, fading from dark to bright linearly. */
         static const Curve Lin;
+        /** Fading from bright to dark linearly. */
         static const Curve LinInv;
+        /** Fading from dark to bright exponentially. */
         static const Curve Exp;
+        /** Fading from bright to dark exponentially. */
         static const Curve ExpInv;
 
     private:
+        /**
+         * The curve type.
+         */
         enum Type {
             /** No modification, fading from dark to bright linearly. */
             LIN,
@@ -44,15 +58,18 @@ namespace LightEffectDriver {
             /** Fading from bright to dark exponentially. */
             EXP_INV
         };
-        explicit Curve(Type type) noexcept : type{type} {}
         Type type;
+
+        explicit Curve(Type type) noexcept : type{type} {}
+
         /**
-         * f(x) = a * e^(x/b) with a = f(0) and b = 255/ln(255/a)
+         * A pre-computed table of function values for
+         *   f(x) = a * e^(x/b) with a = f(0) and b = 255/ln(255/a)
          *
          * Generated with python:
-         * import math
-         * for i in range(256):
-         *   print("%3d" % int(0.99*math.exp(i/255*math.log(255/0.99))), end=", ")
+         *   import math
+         *   for i in range(256):
+         *     print("%3d" % int(0.99*math.exp(i/255*math.log(255/0.99))), end=", ")
         */
         static constexpr uint8_t expTable[256] = {
               0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
