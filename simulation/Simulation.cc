@@ -40,7 +40,7 @@ bool Simulation::show() {
 
 bool Simulation::run() {
     /* Check for events: */
-    sf::Event event;
+    sf::Event event = sf::Event();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             window.close();

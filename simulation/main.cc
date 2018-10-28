@@ -6,7 +6,7 @@
 #include "Simulation.hh"
 
 /**
- * A traffic light.
+ * A traffic light fading through.
  */
 int example1() {
     Simulation simulation({
@@ -19,10 +19,20 @@ int example1() {
         return 1;
     }
     sf::Clock clock;
+    bool fadingDown = false;
+    unsigned long currentLight = 0;
     while (simulation.run()) {
-        if (clock.getElapsedTime().asMilliseconds() > 10) {
-            for (unsigned long i = 0; i < simulation.numLights(); ++i) {
-                simulation.setBrightness(i, (simulation.getBrightness(i) + 1) % 255);
+        if (clock.getElapsedTime().asMilliseconds() > 2) {
+            auto brightness = simulation.getBrightness(currentLight);
+            if (fadingDown) {
+                simulation.setBrightness(currentLight, brightness - (sf::Uint8)1);
+                if (brightness == 1) {
+                    fadingDown = false;
+                    currentLight = (currentLight + 1) % simulation.numLights();
+                }
+            } else {
+                simulation.setBrightness(currentLight, brightness + (sf::Uint8)1);
+                if (brightness == 254) fadingDown = true;
             }
             clock.restart();
         }
@@ -31,7 +41,7 @@ int example1() {
 }
 
 /**
- * A 5x7 dot-matrix display.
+ * A 5x7 dot-matrix display showing "HELLO WORLD" letter by letter.
  */
 int example2() {
     sf::Color c(0,200,0);
@@ -140,6 +150,15 @@ int example2() {
                 1,0,0,0,1,
                 1,0,0,0,1,
                 1,1,1,1,0
+            },
+            {
+                0,0,0,0,0,
+                0,0,0,0,0,
+                0,0,0,0,0,
+                0,0,0,0,0,
+                0,0,0,0,0,
+                0,0,0,0,0,
+                0,0,0,0,0
             }
     };
     Simulation simulation(lights);
